@@ -1,20 +1,59 @@
-//v 4.0 save / get array via cookies
-//v 4.0 read cookie on load and display
-
-//v3.4
-
+//v3.4 Add popup describing app when visitors load webpage the first time
 window.onload = function() {
- alert("Welcome to 'Shopping List' App!\n\nCreated by Jordan Fritzen\n\nQuestions?\nemail Jordan Fritzen\nJFritzen815@comcast.net");
- populateshoppinglistonload();
-  displayShoppinglists();
+    alert("Welcome to 'Shopping List' App!\n\nCreated by Rock Valley College\n**Javascript(Web233) Students**\n\nQuestions?\nemail Professor Chuck Konkol\nc.konkol@rockvalleycollege.edu\n\nRegister @ RockValleyCollege.edu");
+    populateshoppinglistonload();
+    displayShoppinglists();
     clearFocus();
 };
 
-function about()
+//v 4.0 save / get array via cookies
+//v 4.0 read cookie on load and display
+
+//v4.1 get values via URL
+function get(name){
+    var url = window.location.search;
+    var num = url.search(name);
+    var namel = name.length;
+    var frontlength = namel+num+1; //length of everything before the value
+    var front = url.substring(0, frontlength);
+    url = url.replace(front, "");
+    num = url.search("&");
+    if(num>=0) return url.substr(0,num);
+    if(num<0)  return url;
+}
+//ShareList passbyvalues Week 14
+function passlist()
 {
-     alert("Welcome to 'Shopping List' App!\n\nCreated by Jordan Fritzen\n\nQuestions?\nemail Jordan Fritzen\nJFritzen815@comcast.net");
+ var url = "https://rvclist.github.io/rvclist14/index.html?list="+ shoppinglist;
+ //Week 14 add link to sharelist id
+      document.getElementById("sharelist").innerHTML = 'Share List:\n' + url;
+ //Copy URL
+      copyToClipboard(url);
+}
+//vFinal share function
+function share()
+{
+   passlist();
+}
+//Copy URL Week 14
+function copyToClipboard(text) {
+  var passbyurl = document.createElement("textarea");
+  passbyurl.value = text;
+  document.body.appendChild(passbyurl);
+  passbyurl.focus();
+  passbyurl.select();
+  document.execCommand("copy");
+  document.body.removeChild(passbyurl);
+  alert("URL has been copied. Ready to share: " + text);
+  //window.prompt("Copy & Share List!", text);
+    
 }
 
+function about()
+{
+    alert("Welcome to 'Shopping List' App!\n\nCreated by Rock Valley College\n**Javascript(Web233) Students**\n\nQuestions?\nemail Professor Chuck Konkol\nc.konkol@rockvalleycollege.edu\n\nRegister @ RockValleyCollege.edu");
+    
+}
 //read cookie and return
 function readCookie(name) {
     var nameEQ = name + "=";
@@ -33,8 +72,11 @@ function remove_unwanted(str) {
   if ((str===null) || (str===''))  
        return false;  
  else  
-   str = str.toString();  
-   str = str.replace(/%20/g, "");
+   str = str.toString();
+    //clean space
+   str = str.replace(/%20/g, " ");
+    //clean !
+    str = str.replace(/%21/g, "!");
    str = str.replace(/%24/g, "$"); 
    str = str.replace(/%7C/g, " | ");
   return str.replace(/[^\x20-\x7E]/g, '');  
@@ -67,10 +109,17 @@ function populateshoppinglistonload()
   //remove unwanted chars and format
   y = remove_unwanted(y); 
   //spit array by comma %2C
-  y = y.split('%2C');
-  if (y) {
-    shoppinglist = y;
-   }
+  
+   //v 4.1 get URL
+  var geturllistvalue = get("list");
+    if (geturllistvalue) {
+        geturllistvalue = remove_unwanted(geturllistvalue);
+      geturllistvalue = geturllistvalue.split(',');
+      shoppinglist = geturllistvalue;
+  }else if (y){
+       y = y.split('%2C');
+      shoppinglist = y;
+  }
 }
 
 
@@ -134,6 +183,7 @@ function addbacktoshoppinglist(item,num) {
 
 //v 3.1 Update function addShoppinglist by adding objects
 function addtoshopcart(item, num) {
+    document.getElementById("sharelist").innerHTML = ' ';
     deleteShoppinglists(num);
     addtocart.push(item);
   //display shoppinglist
@@ -152,6 +202,7 @@ function addShoppinglist(item) {
   //push to shoppinglist
   if (item != "")
   {
+  document.getElementById("sharelist").innerHTML = ' ';
   shoppinglist.push(item);
   //display shoppinglist
   displayShoppinglists();
@@ -175,20 +226,23 @@ function clearFocus()
 }
 
 
-//v 3.1: update function displayShoppinglists() to add to cart 
+//Update ShoppinhList Week 14
 function displayShoppinglists() {
 document.getElementById("MyList").innerHTML = '';
 var TheList = "";
 var TheRow = "";
+//Get length of arraylist
 var arrayLength = shoppinglist.length;
 for (var i = 0; i < shoppinglist.length; i++) {
   //v 3.1 change button name to btndelete
 var btndelete =  ' <input class="button" id="remove" name="delete" type="button" value="Remove" onclick="deleteShoppinglists(' + i + ')" />';
-var btnupdate =  ' <input class="button" name="edit" type="button" value="Edit Item" onclick="changeShoppinglist(' + i + ')" />';
+//var btnupdate =  ' <input class="button" name="edit" type="button" value="Edit Item" onclick="changeShoppinglist(' + i + ')" />';
 //v 3.1 add edit button using below i index & name it btnpdate
 var arrays = shoppinglist[i];
 arrays = "'"+arrays+"'";
 var btnaddcart =  '<input name="add" type="checkbox" id="adds" value="Add to Shopping Cart" onclick="addtoshopcart('+arrays+','+ i +')" />';
+//Week 14 Add Share Button
+var btnsharelist = '<input class="button" id="shares" name="shares" type="submit" value="Share Shopping List" onclick="share()" />';
 TheRow = '<li>' + shoppinglist[i] + btndelete + ' '  + btnaddcart + '</li>';
 TheList += TheRow;
 }
@@ -196,9 +250,14 @@ TheList += TheRow;
 if (arrayLength > 0)
 {
   document.getElementById("MyList").innerHTML = '<ul>' + TheList + '</ul>';
+//Week 14 Add Share Button if arraylist contains values 
+  document.getElementById("sharebutton").innerHTML = btnsharelist;
 }else
 {
   document.getElementById("MyList").innerHTML = ' ';
+//Week 14 Remove Share Button and Sharelist if arraylist contains values 
+  document.getElementById("sharebutton").innerHTML = ' ';
+    document.getElementById("sharelist").innerHTML = ' ';
 }
 }
 
@@ -227,11 +286,13 @@ if (arrayLength > 0)
 }else{
   document.getElementById("labels").innerHTML = '';
   document.getElementById("MyCart").innerHTML = '';
+    
 }
 }
 
 //v3.1
 function deleteShoppinglists(position) {
+  document.getElementById("sharelist").innerHTML = ' ';
   shoppinglist.splice(position, 1);
   displayShoppinglists();
   displayShoppingCart();
@@ -240,10 +301,12 @@ function deleteShoppinglists(position) {
 }
 //v3.1
 function deleteShoppingCart(position) {
+  document.getElementById("sharelist").innerHTML = ' ';
   addtocart.splice(position, 1);
   displayShoppinglists();
   displayShoppingCart();
 }
+
 
 
 
