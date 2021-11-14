@@ -81,6 +81,9 @@ input[type=button] {
     color: #000000;
     width: 60px;
 }
+img {
+    text-align:center;
+}
 ul {
     list-style-type:none;
     list-style-position:outside;
