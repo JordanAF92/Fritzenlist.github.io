@@ -85,11 +85,11 @@ function remove_unwanted(str) {
 //v 4.0 save cookie
 function savecookie()
 {
-  delete_cookie('konkollist');
+  delete_cookie('fritzenlist');
    var date = new Date();
    //keeps for a year
     date.setTime(date.getTime() + Number(365) * 3600 * 1000);
-   document.cookie = 'konkollist' + "=" + escape(shoppinglist.join(',')) + "; path=/;expires = " + date.toGMTString();
+   document.cookie = 'fritzenlist' + "=" + escape(shoppinglist.join(',')) + "; path=/;expires = " + date.toGMTString();
 }
 
 
@@ -104,7 +104,7 @@ function populateshoppinglistonload()
   shoppinglist = [];
   addtocart = [];
   //load cookie into array
-  var y = readCookie('konkollist');
+  var y = readCookie('fritzenlist');
   //remove unwanted chars and format
   y = remove_unwanted(y); 
   //spit array by comma %2C
