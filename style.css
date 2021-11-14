@@ -89,14 +89,14 @@ ul {
     clear:both;
 }
 li {
-    background: #ccc;
+    background: #33cccc;
     margin:5px 0px;
     line-height:1.6;
     padding:10px;
     border:#222 solid 1px;
 }
 li:nth-child(odd) {
-    background: #ccc;
+    background: #009999;
 }
 li a {
     font-size:small;
