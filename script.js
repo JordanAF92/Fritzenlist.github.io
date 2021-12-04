@@ -1,3 +1,27 @@
+//v3.4 Add popup describing app when visitors load webpage the first time
+window.onload = function() {
+    alert("Welcome to 'Loot List' App!\n\n Created by Jordan Fritzen\n\n");
+    populateshoppinglistonload();
+    displayShoppinglists();
+    clearFocus();
+};
+
+//v 4.0 save / get array via cookies
+//v 4.0 read cookie on load and display
+
+//v4.1 get values via URL
+function get(name){
+    var url = window.location.search;
+    var num = url.search(name);
+    var namel = name.length;
+    var frontlength = namel+num+1; //length of everything before the value
+    var front = url.substring(0, frontlength);
+    url = url.replace(front, "");
+    num = url.search("&");
+    if(num>=0) return url.substr(0,num);
+    if(num<0)  return url;
+}
+//ShareList passbyvalues Week 14
 //v4.1 ShareList via bitly api
 function passlist()
 {
@@ -24,40 +48,6 @@ var url = "https://jordanaf92.github.io/Fritzenlist.github.io/index.html?list="+
         document.getElementById("sharelist").innerHTML = "The URL to share the list:\n" + url;
         copyToClipboard(URL);
     });
-}
-
-
-//v3.4 Add popup describing app when visitors load webpage the first time
-window.onload = function() {
-    alert("Welcome to 'Loot List' App!\n\n Created by Jordan Fritzen\n\n");
-    populateshoppinglistonload();
-    displayShoppinglists();
-    clearFocus();
-};
-
-//v 4.0 save / get array via cookies
-//v 4.0 read cookie on load and display
-
-//v4.1 get values via URL
-function get(name){
-    var url = window.location.search;
-    var num = url.search(name);
-    var namel = name.length;
-    var frontlength = namel+num+1; //length of everything before the value
-    var front = url.substring(0, frontlength);
-    url = url.replace(front, "");
-    num = url.search("&");
-    if(num>=0) return url.substr(0,num);
-    if(num<0)  return url;
-}
-//ShareList passbyvalues Week 14
-function passlist()
-{
- var url = "https://jordanaf92.github.io/Fritzenlist.github.io/index.html?list="+ shoppinglist;
- //Week 14 add link to sharelist id
-      document.getElementById("sharelist").innerHTML = 'Share List:\n' + url;
- //Copy URL
-      copyToClipboard(url);
 }
 //vFinal share function
 function share()
