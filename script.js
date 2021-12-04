@@ -1,7 +1,7 @@
 //v4.1 ShareList via bitly api
 function passlist()
 {
-var url = "https://jordanaf92.github.io/Fritzenlist.github.io/index.html?List="+ shoppinglist;
+var url = "https://jordanaf92.github.io/Fritzenlist.github.io/index.html?list="+ shoppinglist;
    var accessToken = "8102b7e3dd01133063702dcd49e959278c85682f";
    var params = {
        "long_url" : url          
