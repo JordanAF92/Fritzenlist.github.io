@@ -1,3 +1,32 @@
+//v4.1 ShareList via bitly api
+function passlist()
+{
+var url = "https://jordanaf92.github.io/Fritzenlist.github.io/"+ shoppinglist;
+   var accessToken = "8102b7e3dd01133063702dcd49e959278c85682f";
+   var params = {
+       "long_url" : url          
+   };
+   $.ajax({
+       url: "https://api-ssl.bitly.com/v4/shorten",
+       cache: false,
+       dataType: "json",
+       method: "POST",
+       contentType: "application/json",
+       beforeSend: function (xhr) {
+           xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
+       },
+       data: JSON.stringify(params)
+    }).done(function(data) {
+        getshorturl = 1;
+        document.getElementById("sharelist").innerHTML = "The URL to share the list:\n" + data.link;
+        copyToClipboard(data.link);
+    }).fail(function(data) {
+        document.getElementById("sharelist").innerHTML = "The URL to share the list:\n" + url;
+        copyToClipboard(URL);
+    });
+}
+
+
 //v3.4 Add popup describing app when visitors load webpage the first time
 window.onload = function() {
     alert("Welcome to 'Loot List' App!\n\n Created by Jordan Fritzen\n\n");
